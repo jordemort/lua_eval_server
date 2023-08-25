@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Cookie, FastAPI, Request, Response, status
 
-from lua_eval_server.evaluator.simple import EvaluatorException
+from lua_eval_server.evaluator.base import EvaluatorException
 from lua_eval_server.models import ErrorResult, LuaResult
 from lua_eval_server.sessions import SessionManager
 
@@ -22,6 +22,9 @@ async def lua_eval(
         result = await session.evaluator.eval(code)
 
         response.set_cookie(key="session_id", value=session.session_id)
+        if isinstance(result, ErrorResult):
+            response.status_code = 400
+
         return result
     except EvaluatorException as e:
         response.status_code = 400

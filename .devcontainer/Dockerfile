@@ -5,7 +5,17 @@ ARG USER_GID=$USER_UID
 FROM python:3.11-bookworm
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    build-essential curl dumb-init git iputils-ping nano sudo wget
+    build-essential ca-certificates curl dumb-init git gnupg iputils-ping nano sudo wget && \
+    install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    chmod a+r /etc/apt/keyrings/docker.gpg && \
+    echo \
+        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" > \
+        /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y docker-ce-cli && \
+    apt-get clean
 
 ARG USERNAME USER_UID USER_GID
 
