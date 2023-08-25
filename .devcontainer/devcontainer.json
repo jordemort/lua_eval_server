@@ -1,0 +1,38 @@
+{
+  "name": "lua-eval-server",
+  "dockerComposeFile": "docker-compose.yml",
+  "remoteUser": "devuser",
+  "updateRemoteUserUID": true,
+  "service": "lua-eval-server",
+  "workspaceFolder": "/usr/src/lua-eval-server",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/home/devuser/venv/bin/python3",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+              "source.organizeImports": true
+          },
+        },
+        "isort.args":["--profile", "black"],
+      },
+      "extensions": [
+        "bierner.github-markdown-preview",
+        "eamodio.gitlens",
+        "foxundermoon.shell-format",
+        "ms-azuretools.vscode-docker",
+        "ms-python.black-formatter",
+        "ms-python.flake8",
+        "ms-python.isort",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "oderwat.indent-rainbow",
+        "tamasfe.even-better-toml",
+        "timonwong.shellcheck"
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+services:
+  lua-eval-server:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    hostname: evaldev
+    volumes:
+      - ..:/usr/src/lua-eval-server
