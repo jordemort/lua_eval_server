@@ -1,26 +1,25 @@
-from decimal import Decimal
 from typing import Literal
 
 from pydantic import BaseModel
 
 
 class LuaBoolean(BaseModel):
-    type: Literal["boolean"]
+    type: Literal["boolean"] = "boolean"
     value: bool
 
 
 class LuaString(BaseModel):
-    type: Literal["string"]
+    type: Literal["string"] = "string"
     value: str
 
 
 class LuaNumber(BaseModel):
-    type: Literal["number"]
-    value: Decimal
+    type: Literal["number"] = "number"
+    value: int | float
 
 
-class LuaUndefined(BaseModel):
-    type: Literal["undefined"]
+class LuaNil(BaseModel):
+    type: Literal["nil"] = "nil"
 
 
 class LuaTableReference(BaseModel):
@@ -28,7 +27,7 @@ class LuaTableReference(BaseModel):
 
 
 LuaKey = LuaBoolean | LuaString | LuaNumber | LuaTableReference
-LuaValue = LuaKey | LuaUndefined
+LuaValue = LuaKey | LuaNil
 
 
 class LuaTableEntry(BaseModel):
@@ -36,14 +35,11 @@ class LuaTableEntry(BaseModel):
     value: LuaValue
 
 
-class EvalOutput(BaseModel):
-    session_id: str
-    tables: dict[str, list[LuaTableEntry]]
+class LuaResult(BaseModel):
+    tables: dict[str, list[LuaTableEntry]] = {}
     root: LuaValue
 
 
-class EvalError(BaseModel):
+class ErrorResult(BaseModel):
     error_type: str
     error_msg: str
-    line: int | None
-    column: int | None
